@@ -1,0 +1,538 @@
+{
+  "version": "1.0.0",
+  "description": "Catálogo reproducible de marcadores OSINT de MobPsy.",
+  "browsers": {
+    "firefox": {
+      "title": "MobPsy OSINT — Investigación",
+      "categories": [
+        {
+          "name": "OSINT",
+          "bookmarks": [
+            {
+              "name": "OSINT Framework",
+              "url": "https://osintframework.com/"
+            },
+            {
+              "name": "Bellingcat Online Investigation Toolkit",
+              "url": "https://bellingcat.gitbook.io/toolkit"
+            },
+            {
+              "name": "IntelTechniques Search Tools",
+              "url": "https://inteltechniques.com/tools/"
+            },
+            {
+              "name": "Internet Archive · Wayback Machine",
+              "url": "https://web.archive.org/"
+            },
+            {
+              "name": "WhatsMyName",
+              "url": "https://whatsmyname.io/"
+            },
+            {
+              "name": "Epieos",
+              "url": "https://epieos.com/"
+            }
+          ]
+        },
+        {
+          "name": "Personas",
+          "bookmarks": [
+            {
+              "name": "WhatsMyName",
+              "url": "https://whatsmyname.io/"
+            },
+            {
+              "name": "Namechk",
+              "url": "https://namechk.com/"
+            },
+            {
+              "name": "KnowEm",
+              "url": "https://knowem.com/"
+            },
+            {
+              "name": "Epieos",
+              "url": "https://epieos.com/"
+            },
+            {
+              "name": "PeekYou",
+              "url": "https://www.peekyou.com/"
+            }
+          ]
+        },
+        {
+          "name": "Correos",
+          "bookmarks": [
+            {
+              "name": "Have I Been Pwned",
+              "url": "https://haveibeenpwned.com/"
+            },
+            {
+              "name": "MXToolbox · Email Header Analyzer",
+              "url": "https://mxtoolbox.com/EmailHeaders.aspx"
+            },
+            {
+              "name": "Google Admin Toolbox · Messageheader",
+              "url": "https://toolbox.googleapps.com/apps/messageheader/"
+            },
+            {
+              "name": "Hunter · Email Verifier",
+              "url": "https://hunter.io/email-verifier"
+            },
+            {
+              "name": "EmailRep",
+              "url": "https://emailrep.io/"
+            },
+            {
+              "name": "Epieos",
+              "url": "https://epieos.com/"
+            }
+          ]
+        },
+        {
+          "name": "Teléfonos",
+          "bookmarks": [
+            {
+              "name": "CNMC · Portabilidad móvil",
+              "url": "https://numeracionyoperadores.cnmc.es/portabilidad/movil"
+            },
+            {
+              "name": "CNMC · Portabilidad fija",
+              "url": "https://numeracionyoperadores.cnmc.es/portabilidad/fija"
+            },
+            {
+              "name": "CNMC · Registro de numeración",
+              "url": "https://numeracionyoperadores.cnmc.es/"
+            },
+            {
+              "name": "Truecaller · Reverse Phone Lookup",
+              "url": "https://www.truecaller.com/reverse-phone-number-lookup"
+            },
+            {
+              "name": "International Numbering Plans",
+              "url": "https://www.numberingplans.com/"
+            },
+            {
+              "name": "NumLookup",
+              "url": "https://www.numlookup.com/"
+            }
+          ]
+        },
+        {
+          "name": "Redes sociales",
+          "bookmarks": [
+            {
+              "name": "Social Searcher",
+              "url": "https://www.social-searcher.com/"
+            },
+            {
+              "name": "X · Búsqueda avanzada",
+              "url": "https://x.com/search-advanced"
+            },
+            {
+              "name": "YouTube",
+              "url": "https://www.youtube.com/"
+            },
+            {
+              "name": "Google",
+              "url": "https://www.google.com/"
+            }
+          ]
+        },
+        {
+          "name": "Multimedia y metadatos",
+          "bookmarks": [
+            {
+              "name": "TinEye Reverse Image Search",
+              "url": "https://tineye.com/"
+            },
+            {
+              "name": "Google Lens",
+              "url": "https://lens.google.com/"
+            },
+            {
+              "name": "Bing Visual Search",
+              "url": "https://www.bing.com/visualsearch"
+            },
+            {
+              "name": "Yandex Images",
+              "url": "https://yandex.com/images/"
+            },
+            {
+              "name": "FotoForensics",
+              "url": "https://fotoforensics.com/"
+            },
+            {
+              "name": "Metadata2Go",
+              "url": "https://www.metadata2go.com/"
+            },
+            {
+              "name": "InVID Verification Plugin",
+              "url": "https://www.invid-project.eu/tools-and-services/invid-verification-plugin/"
+            }
+          ]
+        },
+        {
+          "name": "Geolocalización",
+          "bookmarks": [
+            {
+              "name": "Google Maps",
+              "url": "https://maps.google.com/"
+            },
+            {
+              "name": "OpenStreetMap",
+              "url": "https://www.openstreetmap.org/"
+            },
+            {
+              "name": "Mapillary",
+              "url": "https://www.mapillary.com/"
+            },
+            {
+              "name": "SunCalc",
+              "url": "https://www.suncalc.org/"
+            },
+            {
+              "name": "Flightradar24",
+              "url": "https://www.flightradar24.com/"
+            },
+            {
+              "name": "FlightAware",
+              "url": "https://www.flightaware.com/"
+            },
+            {
+              "name": "MarineTraffic",
+              "url": "https://www.marinetraffic.com/"
+            },
+            {
+              "name": "VesselFinder",
+              "url": "https://www.vesselfinder.com/"
+            },
+            {
+              "name": "Sentinel Hub · EO Browser",
+              "url": "https://apps.sentinel-hub.com/eo-browser/"
+            },
+            {
+              "name": "NASA Worldview",
+              "url": "https://worldview.earthdata.nasa.gov/"
+            }
+          ]
+        }
+      ]
+    },
+    "chromium": {
+      "title": "MobPsy OSINT — Técnico",
+      "categories": [
+        {
+          "name": "00 · OSINT",
+          "bookmarks": [
+            {
+              "name": "OSINT Framework",
+              "url": "https://osintframework.com/"
+            },
+            {
+              "name": "Bellingcat Online Investigation Toolkit",
+              "url": "https://bellingcat.gitbook.io/toolkit"
+            },
+            {
+              "name": "Internet Archive · Wayback Machine",
+              "url": "https://web.archive.org/"
+            },
+            {
+              "name": "CentralOps",
+              "url": "https://centralops.net/co/"
+            }
+          ]
+        },
+        {
+          "name": "DNS e IP",
+          "bookmarks": [
+            {
+              "name": "RIPE Database",
+              "url": "https://apps.db.ripe.net/db-web-ui/query"
+            },
+            {
+              "name": "ARIN RDAP",
+              "url": "https://search.arin.net/rdap/"
+            },
+            {
+              "name": "APNIC Whois",
+              "url": "https://wq.apnic.net/"
+            },
+            {
+              "name": "ICANN Lookup",
+              "url": "https://lookup.icann.org/"
+            },
+            {
+              "name": "DNSDumpster",
+              "url": "https://dnsdumpster.com/"
+            },
+            {
+              "name": "ViewDNS.info",
+              "url": "https://viewdns.info/"
+            },
+            {
+              "name": "SecurityTrails",
+              "url": "https://securitytrails.com/"
+            },
+            {
+              "name": "Hurricane Electric · BGP Toolkit",
+              "url": "https://bgp.he.net/"
+            },
+            {
+              "name": "IPinfo",
+              "url": "https://ipinfo.io/"
+            },
+            {
+              "name": "AbuseIPDB",
+              "url": "https://www.abuseipdb.com/"
+            }
+          ]
+        },
+        {
+          "name": "Web e infraestructura",
+          "bookmarks": [
+            {
+              "name": "Shodan",
+              "url": "https://www.shodan.io/"
+            },
+            {
+              "name": "Censys Search",
+              "url": "https://search.censys.io/"
+            },
+            {
+              "name": "urlscan.io",
+              "url": "https://urlscan.io/"
+            },
+            {
+              "name": "crt.sh",
+              "url": "https://crt.sh/"
+            },
+            {
+              "name": "BuiltWith",
+              "url": "https://builtwith.com/"
+            },
+            {
+              "name": "Netcraft Site Report",
+              "url": "https://sitereport.netcraft.com/"
+            },
+            {
+              "name": "Security Headers",
+              "url": "https://securityheaders.com/"
+            },
+            {
+              "name": "Qualys SSL Labs",
+              "url": "https://www.ssllabs.com/ssltest/"
+            },
+            {
+              "name": "Robtex",
+              "url": "https://www.robtex.com/"
+            },
+            {
+              "name": "VirusTotal",
+              "url": "https://www.virustotal.com/gui/home/search"
+            }
+          ]
+        },
+        {
+          "name": "Threat Intelligence",
+          "bookmarks": [
+            {
+              "name": "AlienVault OTX",
+              "url": "https://otx.alienvault.com/"
+            },
+            {
+              "name": "GreyNoise",
+              "url": "https://viz.greynoise.io/"
+            },
+            {
+              "name": "URLhaus",
+              "url": "https://urlhaus.abuse.ch/"
+            },
+            {
+              "name": "ThreatFox",
+              "url": "https://threatfox.abuse.ch/"
+            },
+            {
+              "name": "MalwareBazaar",
+              "url": "https://bazaar.abuse.ch/"
+            },
+            {
+              "name": "Cisco Talos · Reputation Center",
+              "url": "https://talosintelligence.com/reputation_center/"
+            },
+            {
+              "name": "Spamhaus · Reputation Checker",
+              "url": "https://check.spamhaus.org/"
+            }
+          ]
+        },
+        {
+          "name": "Cripto",
+          "bookmarks": [
+            {
+              "name": "mempool.space · Bitcoin",
+              "url": "https://mempool.space/"
+            },
+            {
+              "name": "Blockchain.com Explorer",
+              "url": "https://www.blockchain.com/explorer"
+            },
+            {
+              "name": "Blockchair",
+              "url": "https://blockchair.com/"
+            },
+            {
+              "name": "Etherscan",
+              "url": "https://etherscan.io/"
+            },
+            {
+              "name": "TRONSCAN",
+              "url": "https://tronscan.org/"
+            },
+            {
+              "name": "Blockscout",
+              "url": "https://blockscout.com/"
+            },
+            {
+              "name": "Arkham",
+              "url": "https://intel.arkm.com/"
+            },
+            {
+              "name": "MetaSleuth",
+              "url": "https://metasleuth.io/"
+            },
+            {
+              "name": "OKLink Explorer",
+              "url": "https://www.oklink.com/"
+            }
+          ]
+        },
+        {
+          "name": "Buscadores",
+          "bookmarks": [
+            {
+              "name": "Google",
+              "url": "https://www.google.com/"
+            },
+            {
+              "name": "Bing",
+              "url": "https://www.bing.com/"
+            },
+            {
+              "name": "DuckDuckGo",
+              "url": "https://duckduckgo.com/"
+            },
+            {
+              "name": "Startpage",
+              "url": "https://www.startpage.com/"
+            },
+            {
+              "name": "Brave Search",
+              "url": "https://search.brave.com/"
+            },
+            {
+              "name": "Yandex",
+              "url": "https://yandex.com/"
+            }
+          ]
+        }
+      ]
+    },
+    "tor": {
+      "title": "MobPsy OSINT — Privacidad",
+      "categories": [
+        {
+          "name": "Tor y privacidad",
+          "bookmarks": [
+            {
+              "name": "Tor Project",
+              "url": "https://www.torproject.org/"
+            },
+            {
+              "name": "Tor Browser Support",
+              "url": "https://support.torproject.org/tor-browser/"
+            },
+            {
+              "name": "Tor · Uso seguro",
+              "url": "https://support.torproject.org/tor-browser/security/using-tb-safely/"
+            },
+            {
+              "name": "Tor · Onion Services",
+              "url": "https://support.torproject.org/tor-browser/features/onion-services/"
+            },
+            {
+              "name": "Tor Metrics",
+              "url": "https://metrics.torproject.org/"
+            },
+            {
+              "name": "OnionShare",
+              "url": "https://onionshare.org/"
+            },
+            {
+              "name": "EFF · Surveillance Self-Defense",
+              "url": "https://ssd.eff.org/"
+            }
+          ]
+        },
+        {
+          "name": "Búsqueda",
+          "bookmarks": [
+            {
+              "name": "DuckDuckGo",
+              "url": "https://duckduckgo.com/"
+            },
+            {
+              "name": "DuckDuckGo · Onion",
+              "url": "http://duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion/"
+            },
+            {
+              "name": "Ahmia",
+              "url": "https://ahmia.fi/"
+            },
+            {
+              "name": "Startpage",
+              "url": "https://www.startpage.com/"
+            }
+          ]
+        },
+        {
+          "name": "Investigación y archivo",
+          "bookmarks": [
+            {
+              "name": "Bellingcat Online Investigation Toolkit",
+              "url": "https://bellingcat.gitbook.io/toolkit"
+            },
+            {
+              "name": "OSINT Framework",
+              "url": "https://osintframework.com/"
+            },
+            {
+              "name": "Internet Archive · Wayback Machine",
+              "url": "https://web.archive.org/"
+            },
+            {
+              "name": "IntelTechniques Search Tools",
+              "url": "https://inteltechniques.com/tools/"
+            },
+            {
+              "name": "Privacy Guides",
+              "url": "https://www.privacyguides.org/"
+            }
+          ]
+        },
+        {
+          "name": "SecureDrop",
+          "bookmarks": [
+            {
+              "name": "SecureDrop · Directory",
+              "url": "https://securedrop.org/directory/"
+            },
+            {
+              "name": "SecureDrop",
+              "url": "https://securedrop.org/"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

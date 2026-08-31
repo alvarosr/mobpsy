@@ -1,0 +1,20 @@
+# MobPsy
+.vagrant/
+dist/
+__pycache__/
+*.py[cod]
+*.log
+*.tmp
+*.bak
+*.old
+*.ova
+*.ovf
+*.vdi
+*.vmdk
+*.box
+_backup*/
+*.backup*
+*.pre_*
+*.before_*
+.DS_Store
+Thumbs.db

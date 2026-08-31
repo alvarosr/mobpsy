@@ -1,0 +1,13 @@
+﻿{
+    "product":  "MobPsy",
+    "vm_name":  "MobPsy-Workstation",
+    "github_repo":  "alvarosr/mobpsy",
+    "release_channel":  "stable",
+    "default_branch":  "main",
+    "ova_username":  "mobpsy",
+    "ova_password":  "mobpsy",
+    "ova_resolution":  "1440x900",
+    "ova_ram_mb":  6144,
+    "ova_vram_mb":  128,
+    "repository":  "alvarosr/mobpsy"
+}
