@@ -785,10 +785,10 @@ MobPsy integra herramientas desarrolladas por distintos proyectos open source.
 
 Cada herramienta mantiene:
 
-- su autoría;
-- su repositorio original;
-- su licencia;
-- sus condiciones de uso.
+- su autoría
+- su repositorio original
+- su licencia
+- sus condiciones de uso
 
 MobPsy no reclama autoría sobre software de terceros.
 
@@ -802,18 +802,14 @@ No está diseñado para autorizar accesos no permitidos, eludir controles de acc
 
 El usuario debe:
 
-- trabajar únicamente dentro de un marco legal;
-- disponer de las autorizaciones necesarias;
-- respetar las condiciones de uso de los servicios consultados;
-- proteger adecuadamente la información obtenida durante una investigación.
+- trabajar únicamente dentro de un marco legal
+- disponer de las autorizaciones necesarias
+- respetar las condiciones de uso de los servicios consultados
+- proteger adecuadamente la información obtenida durante una investigación
 
 ---
 
-<div align="center">
 
-### MobPsy 1.0.0
-
-**OSINT Workstation · Cases · Correlation · Local AI**
 
 Código fuente y seguimiento del proyecto en GitHub.
 
