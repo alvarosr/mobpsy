@@ -476,11 +476,11 @@ La IA es una ayuda para el analista, no una fuente probatoria.
 
 Una respuesta generada debe contrastarse siempre con:
 
-- la evidencia original;
-- las exportaciones;
-- los hashes;
-- los resultados del correlator;
-- las fuentes externas utilizadas durante la investigación.
+- la evidencia original
+- las exportaciones
+- los hashes
+- los resultados del correlator
+- las fuentes externas utilizadas duante la investigación
 
 ---
 
