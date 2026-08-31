@@ -15,7 +15,7 @@
 [![Vagrant](https://img.shields.io/badge/Vagrant-2.4.x-1868F2)](#requisitos)
 [![OSINT](https://img.shields.io/badge/category-OSINT-111827)](#herramientas-integradas)
 
-**[⬇️ Descargar MobPsy OVA](__OVA_DOWNLOAD_URL__)** ·
+**[⬇️ Descargar MobPsy OVA](https://drive.google.com/file/d/1FBgaxtjRW5KQuXQPIQogXTv3B5qMjIY2/view?usp=sharing)** ·
 [Instalación desde código](#opción-2--instalación-desde-código) ·
 [Manual rápido](#uso-de-mobpsy) ·
 [Herramientas](#herramientas-integradas)
@@ -91,7 +91,7 @@ Es la opción más sencilla para la mayoría de usuarios.
 
 ### 1. Descargar la OVA
 
-**[⬇️ Descargar MobPsy v1.0.0 OVA](__OVA_DOWNLOAD_URL__)**
+**[⬇️ Descargar MobPsy v1.0.0 OVA](https://drive.google.com/file/d/1FBgaxtjRW5KQuXQPIQogXTv3B5qMjIY2/view?usp=sharing)**
 
 Archivo esperado:
 
@@ -102,8 +102,10 @@ MobPsy-v1.0.0.ova
 SHA-256 oficial:
 
 ```text
-__OVA_SHA256__
+79cf9e40f4189a0378170f115d13d0ca708e1963a64e86c15da492c242260b18
 ```
+
+[📄 Descargar archivo SHA-256](https://drive.google.com/file/d/1TIyr-VUED9iYejLwnDrLS9kDmR-NuU4Y/view?usp=sharing)
 
 > [!TIP]
 > El archivo OVA se distribuye externamente porque supera el límite por archivo de GitHub Releases. El código fuente y el historial del proyecto permanecen en GitHub.
