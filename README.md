@@ -75,10 +75,9 @@ flowchart LR
 
 MobPsy intenta mantener una separación clara entre:
 
-- **datos observados** en evidencias y exportaciones;
-- **correlaciones** obtenidas al encontrar entidades repetidas en distintas fuentes;
-- **inferencias** realizadas durante el análisis;
-- **hipótesis** que todavía necesitan ser verificadas.
+- **datos observados** en evidencias y exportaciones
+- **correlaciones** obtenidas al encontrar entidades repetidas en distintas fuentes
+- **inferencias** realizadas durante el análisis
 
 ---
 
