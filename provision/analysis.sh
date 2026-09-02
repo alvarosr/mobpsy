@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
+export PYTHONUNBUFFERED=1
 
 UPLOAD="/home/vagrant/mobpsy_analysis_upload"
 ROOT="/opt/mobpsy/analysis"
@@ -66,14 +67,64 @@ chmod 0644 /usr/share/applications/mobpsy-correlator.desktop
 update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
 
 echo "[4/6] Verificando sintaxis y lanzador..."
-/usr/bin/python3 -m py_compile "$ROOT/mobpsy_correlate.py"
-/usr/local/bin/mobpsy-correlate --help >/dev/null
+
+# 1) Validar el backend Python sin ejecutar una correlación real.
+if ! timeout --foreground 20s /usr/bin/python3 -m py_compile "$ROOT/mobpsy_correlate.py"; then
+    echo "ERROR: mobpsy_correlate.py no supera py_compile." >&2
+    exit 241
+fi
+
+# 2) Validar el script lanzador como shell, sin depender de su ejecución.
+if ! /bin/bash -n /usr/local/bin/mobpsy-correlate; then
+    echo "ERROR: el lanzador /usr/local/bin/mobpsy-correlate contiene un error de sintaxis." >&2
+    exit 242
+fi
+
+if [ ! -x /usr/local/bin/mobpsy-correlate ]; then
+    echo "ERROR: el lanzador mobpsy-correlate no es ejecutable." >&2
+    exit 243
+fi
+
+# 3) Probar el backend directamente. Esto valida argparse/imports y evita
+# falsos negativos del wrapper durante el propio aprovisionamiento.
+set +e
+VERSION_OUTPUT="$(timeout --foreground 20s /usr/bin/python3 "$ROOT/mobpsy_correlate.py" --version 2>&1)"
+RC=$?
+set -e
+if [ "$RC" -ne 0 ]; then
+    if [ "$RC" -eq 124 ]; then
+        echo "ERROR: la comprobación de versión de Correlator superó 20 segundos." >&2
+    else
+        echo "ERROR: el backend de Correlator no supera la comprobación de versión (código $RC)." >&2
+        printf '%s\n' "$VERSION_OUTPUT" >&2
+    fi
+    exit 244
+fi
+
+echo "      Sintaxis: OK"
+echo "      Lanzador: OK"
+echo "      ${VERSION_OUTPUT:-MobPsy Correlator OK}"
 
 echo "[5/6] Verificando integración con casos..."
 install -d -o "$USER_NAME" -g "$USER_NAME" "$USER_HOME/MobPsy/Casos"
-# status no exige que exista un caso activo: sirve para que el instalador pueda
-# validar el backend incluso antes de que el usuario cree su primera investigación.
-sudo -u "$USER_NAME" /usr/local/bin/mobpsy-correlate status >/dev/null
+
+# status no analiza ningún expediente. Se ejecuta directamente con el backend
+# para verificar la integración con ~/MobPsy/Casos sin depender del wrapper.
+set +e
+STATUS_OUTPUT="$(timeout --foreground 20s sudo -u "$USER_NAME" /usr/bin/python3 "$ROOT/mobpsy_correlate.py" status 2>&1)"
+RC=$?
+set -e
+if [ "$RC" -ne 0 ]; then
+    if [ "$RC" -eq 124 ]; then
+        echo "ERROR: la comprobación de estado de Correlator superó 20 segundos." >&2
+    else
+        echo "ERROR: Correlator no pudo consultar su estado (código $RC)." >&2
+        printf '%s\n' "$STATUS_OUTPUT" >&2
+    fi
+    exit 245
+fi
+
+echo "      Integración con casos: OK"
 
 echo "[6/6] Registrando..."
 mkdir -p /etc/mobpsy

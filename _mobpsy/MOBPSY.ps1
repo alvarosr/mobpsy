@@ -293,7 +293,7 @@ function Install-MobPsy {
  Phase "Ajustando pantalla a alta resolución" @("display_resolution") $true
  Phase "Aplicando identidad visual de MobPsy" @("mobpsy_gui_files","mobpsy_gui","mobpsy_branding_assets","branding") $true
  Phase "Configurando IA local" @("mobpsy_analysis_files","ai_local","mobpsy_gui_files","mobpsy_gui","mobpsy_cli_files","terminal_cli") $true
- Phase "Configurando versiones y GitHub Releases" @("versioning","mobpsy_gui_files","mobpsy_gui") $false
+ Phase "Configurando versiones y GitHub Releases" @("mobpsy_guest_updater_file","versioning","mobpsy_gui_files","mobpsy_gui") $false
  Phase "Aplicando revisión final de interfaces" @("mobpsy_cli_files","terminal_cli","mobpsy_gui_files","mobpsy_gui","mobpsy_branding_assets","branding") $true
 
  Write-Host ""

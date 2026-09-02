@@ -1,20 +1,33 @@
-# MobPsy
+# MobPsy - archivos locales / generados
 .vagrant/
+.vagrant_backup*/
+.git/
 dist/
+_backup*/
+*.backup*
+*.pre_*
+*.before_*
+
+# Python / cachés
 __pycache__/
 *.py[cod]
+.pytest_cache/
+
+# Temporales y logs
 *.log
 *.tmp
 *.bak
 *.old
+
+# Máquinas virtuales y artefactos pesados
 *.ova
 *.ovf
 *.vdi
 *.vmdk
 *.box
-_backup*/
-*.backup*
-*.pre_*
-*.before_*
+
+# Sistema operativo / IDE
 .DS_Store
 Thumbs.db
+.vscode/
+.idea/

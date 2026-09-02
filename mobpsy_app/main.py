@@ -1,4 +1,16 @@
 from __future__ import annotations
+
+# main.py se carga también mediante importlib durante el smoke test del instalador.
+# En ese caso Python NO añade automáticamente /opt/mobpsy/app a sys.path.
+# Añadimos primero el directorio de la aplicación y solo después importamos
+# los módulos hermanos. Esto evita ModuleNotFoundError en instalaciones limpias.
+import sys
+from pathlib import Path
+
+APP_SOURCE_DIR = Path(__file__).resolve().parent
+if str(APP_SOURCE_DIR) not in sys.path:
+    sys.path.insert(0, str(APP_SOURCE_DIR))
+
 from mobpsy_runtime_pages import install_mobpsy_functional_pages
 
 import hashlib
@@ -7,15 +19,9 @@ import ipaddress
 import json
 import re
 import shutil
-import sys
 import uuid
 from dataclasses import dataclass
 from datetime import datetime
-from pathlib import Path
-
-APP_SOURCE_DIR = Path(__file__).resolve().parent
-if str(APP_SOURCE_DIR) not in sys.path:
-    sys.path.insert(0, str(APP_SOURCE_DIR))
 
 from case_context import (
     active_case_label,

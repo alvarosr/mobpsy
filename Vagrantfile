@@ -240,6 +240,13 @@ Vagrant.configure("2") do |config|
     run: "never"
 
   # Versionado y GitHub Releases.
+  # El actualizador interno es un fichero Python y debe subirse explícitamente
+  # porque MobPsy no utiliza carpetas compartidas (/vagrant está deshabilitado).
+  config.vm.provision "mobpsy_guest_updater_file", type: "file",
+    source: "provision/mobpsy_guest_updater.py",
+    destination: "/tmp/mobpsy_guest_updater.py",
+    run: "never"
+
   config.vm.provision "versioning", type: "shell",
     path: "provision/versioning.sh",
     run: "never"

@@ -16,9 +16,26 @@ echo " MobPsy 1.0.0 - Interfaz grÃƒÆ’Ã‚Â¡fica"
 echo "============================================================"
 echo
 
-if [ ! -f "${UPLOAD_DIR}/main.py" ] || [ ! -f "${UPLOAD_DIR}/requirements.txt" ]; then
-    echo "ERROR: no se han recibido los archivos de la aplicaciÃƒÆ’Ã‚Â³n." >&2
-    echo "Ejecuta primero el provisioner mobpsy_gui_files." >&2
+REQUIRED_GUI_FILES=(
+    main.py
+    requirements.txt
+    case_context.py
+    mobpsy_runtime_pages.py
+    mobpsy_functional_pages.py
+    mobpsy_update_page.py
+)
+
+missing_gui_files=()
+for f in "${REQUIRED_GUI_FILES[@]}"; do
+    if [ ! -f "${UPLOAD_DIR}/${f}" ]; then
+        missing_gui_files+=("${f}")
+    fi
+done
+
+if [ "${#missing_gui_files[@]}" -ne 0 ]; then
+    echo "ERROR: el paquete de la GUI recibido por Vagrant está incompleto." >&2
+    printf 'Falta: %s\n' "${missing_gui_files[@]}" >&2
+    echo "Comprueba que la carpeta mobpsy_app del repositorio contiene todos los módulos." >&2
     exit 40
 fi
 
@@ -60,34 +77,15 @@ import PySide6
 print("PySide6:", PySide6.__version__)
 PY
 
-# MOBPSY_EXTRA_GUI_FILES_BEFORE_SMOKETEST_V1
-# Archivos funcionales aÃƒÆ’Ã‚Â±adidos por el cierre final.
-for f in mobpsy_functional_pages.py mobpsy_runtime_pages.py mobpsy_update_page.py; do
-    if [ -f "/home/vagrant/mobpsy_app_upload/$f" ]; then
-        install -m 0644 "/home/vagrant/mobpsy_app_upload/$f" "/opt/mobpsy/app/$f"
-    elif [ -f "/home/vagrant/mobpsy_app_upload/mobpsy_app/$f" ]; then
-        install -m 0644 "/home/vagrant/mobpsy_app_upload/mobpsy_app/$f" "/opt/mobpsy/app/$f"
-    fi
+# MOBPSY_GUI_MODULE_VALIDATION_V2
+# cp -a anterior debe copiar el paquete completo. Verificamos la instalación real
+# antes de ejecutar el smoke test para detectar paquetes públicos incompletos.
+for f in main.py case_context.py mobpsy_runtime_pages.py mobpsy_functional_pages.py mobpsy_update_page.py; do
+    test -f "${APP_DIR}/${f}" || {
+        echo "ERROR: falta ${APP_DIR}/${f} después de instalar la GUI." >&2
+        exit 41
+    }
 done
-
-mkdir -p /opt/mobpsy/app/integration
-if [ -f "/home/vagrant/mobpsy_app_upload/integration/mobpsy_correlate.py" ]; then
-    install -m 0755 "/home/vagrant/mobpsy_app_upload/integration/mobpsy_correlate.py" "/opt/mobpsy/app/integration/mobpsy_correlate.py"
-elif [ -f "/home/vagrant/mobpsy_app_upload/mobpsy_app/integration/mobpsy_correlate.py" ]; then
-    install -m 0755 "/home/vagrant/mobpsy_app_upload/mobpsy_app/integration/mobpsy_correlate.py" "/opt/mobpsy/app/integration/mobpsy_correlate.py"
-fi
-
-if [ -f /opt/mobpsy/app/integration/mobpsy_correlate.py ]; then
-    mkdir -p /opt/mobpsy/analysis
-    install -m 0755 /opt/mobpsy/app/integration/mobpsy_correlate.py /opt/mobpsy/analysis/mobpsy_correlate.py
-    cat >/usr/local/bin/mobpsy-correlate <<'MOBPSY_CORR_LAUNCHER'
-#!/usr/bin/env bash
-set -e
-exec /usr/bin/python3 /opt/mobpsy/analysis/mobpsy_correlate.py "$@"
-MOBPSY_CORR_LAUNCHER
-    chmod 0755 /usr/local/bin/mobpsy-correlate
-    ln -sf /usr/local/bin/mobpsy-correlate /usr/local/bin/mobpsy-correlator
-fi
 
 echo "[6/8] Ejecutando smoke test completo de la GUI..."
 QT_QPA_PLATFORM=offscreen "${VENV_DIR}/bin/python" - <<'PY'
@@ -96,6 +94,9 @@ import sys
 
 from PySide6.QtWidgets import QApplication
 
+app_dir = "/opt/mobpsy/app"
+if app_dir not in sys.path:
+    sys.path.insert(0, app_dir)
 path = "/opt/mobpsy/app/main.py"
 spec = importlib.util.spec_from_file_location("mobpsy_main_smoketest", path)
 module = importlib.util.module_from_spec(spec)
@@ -141,6 +142,9 @@ import importlib.util
 import sys
 from PySide6.QtWidgets import QApplication
 
+app_dir = "/opt/mobpsy/app"
+if app_dir not in sys.path:
+    sys.path.insert(0, app_dir)
 path = "/opt/mobpsy/app/main.py"
 spec = importlib.util.spec_from_file_location("mobpsy_gui_check", path)
 module = importlib.util.module_from_spec(spec)

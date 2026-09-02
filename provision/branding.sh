@@ -58,8 +58,6 @@ gtk-update-icon-cache -f /usr/share/icons/hicolor >/dev/null 2>&1 || true
 update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
 chown -R "$USER_NAME:$USER_NAME" "$USER_HOME/.config" || true
 
-echo "MOBPSY_BRANDING_OK"
-
 # MOBPSY_CANONICAL_LOGO_LOCK_V1
 # El logo corporativo de MobPsy tiene una Ãºnica fuente. Cualquier fase posterior
 # debe usar esta copia y nunca reintroducir un icono histÃ³rico.
@@ -77,8 +75,29 @@ done
 
 if [ -n "$CANONICAL_LOGO" ]; then
     install -d -m 0755 /usr/share/pixmaps /opt/mobpsy/branding
-    install -m 0644 "$CANONICAL_LOGO" /usr/share/pixmaps/mobpsy.png
-    install -m 0644 "$CANONICAL_LOGO" /opt/mobpsy/branding/mobpsy_logo.png
+
+    copy_logo_if_needed() {
+        local src="$1"
+        local dst="$2"
+
+        mkdir -p "$(dirname "$dst")"
+
+        # Evita el fallo de GNU install cuando origen y destino son el mismo
+        # archivo. Esto puede ocurrir cuando la única copia canónica disponible
+        # ya es /opt/mobpsy/app/assets/mobpsy_logo.png.
+        local src_real dst_real
+        src_real="$(readlink -f "$src" 2>/dev/null || printf '%s' "$src")"
+        dst_real="$(readlink -f "$dst" 2>/dev/null || printf '%s' "$dst")"
+
+        if [ "$src_real" = "$dst_real" ]; then
+            return 0
+        fi
+
+        install -m 0644 "$src" "$dst"
+    }
+
+    copy_logo_if_needed "$CANONICAL_LOGO" /usr/share/pixmaps/mobpsy.png
+    copy_logo_if_needed "$CANONICAL_LOGO" /opt/mobpsy/branding/mobpsy_logo.png
 
     for target in \
         /opt/mobpsy/app/assets/mobpsy_logo.png \
@@ -86,8 +105,9 @@ if [ -n "$CANONICAL_LOGO" ]; then
         /opt/mobpsy/app/resources/mobpsy_logo.png \
         /opt/mobpsy/app/icons/mobpsy.png
     do
-        mkdir -p "$(dirname "$target")"
-        install -m 0644 "$CANONICAL_LOGO" "$target"
+        copy_logo_if_needed "$CANONICAL_LOGO" "$target"
     done
 fi
 # FIN MOBPSY_CANONICAL_LOGO_LOCK_V1
+
+echo "MOBPSY_BRANDING_OK"

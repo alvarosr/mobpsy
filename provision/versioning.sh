@@ -15,9 +15,16 @@ install -d -m 0755 /etc/mobpsy /usr/local/lib/mobpsy /var/backups/mobpsy
 printf '%s\n' "$VERSION" >/etc/mobpsy/version
 printf 'MOBPSY_UPDATE_REPOSITORY=%s\n' "$REPOSITORY" >/etc/mobpsy/update.conf
 
-if [ ! -f /tmp/mobpsy_guest_updater.py ]; then
-    echo "ERROR: falta /tmp/mobpsy_guest_updater.py" >&2
+if [ ! -s /tmp/mobpsy_guest_updater.py ]; then
+    echo "ERROR: no se recibió el actualizador interno /tmp/mobpsy_guest_updater.py." >&2
+    echo "       Ejecuta primero el provisionador mobpsy_guest_updater_file." >&2
     exit 251
+fi
+
+# Comprobar sintaxis antes de instalarlo para no dejar un updater inválido.
+if ! /usr/bin/python3 -m py_compile /tmp/mobpsy_guest_updater.py; then
+    echo "ERROR: mobpsy_guest_updater.py contiene un error de sintaxis." >&2
+    exit 252
 fi
 
 install -m 0755 /tmp/mobpsy_guest_updater.py /usr/local/lib/mobpsy/mobpsy_guest_updater.py
