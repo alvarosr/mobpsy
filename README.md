@@ -409,9 +409,9 @@ mismo username
 
 La correlación **no implica automáticamente identidad o atribución**. MobPsy la utiliza como apoyo para que el analista pueda distinguir entre:
 
-- coincidencia;
-- corroboración documental;
-- relación probable;
+- coincidencia
+- corroboración documental
+- relación probable
 - conclusión demostrada.
 
 Los resultados pueden utilizarse posteriormente en los informes del caso.
@@ -654,8 +654,8 @@ Instala Vagrant y abre una nueva consola.
 
 Comprueba en BIOS/UEFI:
 
-- AMD-V / SVM para AMD;
-- Intel VT-x para Intel.
+- AMD-V / SVM para AMD
+- Intel VT-x para Intel
 
 También revisa conflictos con hipervisores adicionales del sistema anfitrión.
 
@@ -663,10 +663,10 @@ También revisa conflictos con hipervisores adicionales del sistema anfitrión.
 
 La IA se ejecuta localmente dentro de la máquina virtual. El rendimiento depende especialmente de:
 
-- CPU asignada a la VM;
-- memoria disponible;
-- carga simultánea del navegador y otras herramientas;
-- tamaño del expediente.
+- CPU asignada a la VM
+- memoria disponible
+- carga simultánea del navegador y otras herramientas
+- tamaño del expediente
 
 Las preguntas de metadatos simples pueden resolverse sin invocar el modelo y las preguntas analíticas utilizan recuperación de fragmentos para reducir carga.
 
@@ -689,20 +689,20 @@ MobPsy intenta mantener los datos de una investigación dentro de la workstation
 
 Las utilidades OSINT pueden contactar:
 
-- buscadores;
-- redes sociales;
-- APIs;
-- DNS;
-- sitios web;
-- servicios de terceros.
+- buscadores
+- redes sociales
+- APIs
+- DNS
+- sitios web
+- servicios de terceros
 
 Antes de utilizar una herramienta en un caso sensible, revisa:
 
-1. qué información envía;
-2. a qué servicio se conecta;
-3. si utiliza una API;
-4. si requiere una cuenta;
-5. los términos y políticas de la fuente consultada.
+1. qué información envía
+2. a qué servicio se conecta
+3. si utiliza una API
+4. si requiere una cuenta
+5. los términos y políticas de la fuente consultada
 
 La IA integrada mediante Ollama es local, pero las herramientas OSINT mantienen su comportamiento de red habitual.
 
@@ -747,36 +747,22 @@ Las incidencias y propuestas de mejora pueden abrirse mediante **GitHub Issues**
 
 Cuando informes de un problema intenta incluir:
 
-- versión de MobPsy;
-- Windows utilizado;
-- versión de VirtualBox;
-- versión de Vagrant, si aplica;
-- opción del menú utilizada;
-- mensaje de error completo;
-- captura de pantalla cuando aporte contexto.
+- versión de MobPsy
+- Windows utilizado
+- versión de VirtualBox
+- versión de Vagrant, si aplica
+- opción del menú utilizada
+- mensaje de error completo
+- captura de pantalla cuando aporte contexto
 
 No publiques en una issue:
 
-- contraseñas;
-- tokens;
-- claves API;
-- nombres reales de casos privados;
-- evidencias;
-- información personal obtenida durante una investigación.
-
----
-
-# Roadmap
-
-Áreas previstas de evolución:
-
-- mejora continua del motor de correlación;
-- mayor normalización de resultados entre herramientas;
-- ampliación del análisis local asistido por IA;
-- mejora del sistema de informes;
-- nuevas integraciones OSINT;
-- endurecimiento y validación de la appliance;
-- automatización del ciclo de releases.
+- contraseñas
+- tokens
+- claves API
+- nombres reales de casos privados
+- evidencias
+- información personal obtenida durante una investigación
 
 ---
 
