@@ -26,6 +26,11 @@ Vagrant.configure("2") do |config|
 
   config.vm.provider "virtualbox" do |vb|
     vb.name = "MobPsy-Workstation"
+
+    # MobPsy debe quedar autocontenido también cuando se crea desde Vagrant.
+    # Se fuerza clon completo para que el disco de la workstation no dependa
+    # de una VM maestra/base de Vagrant después de reiniciar Windows.
+    vb.linked_clone = false
     vb.memory = (ENV["MOBPSY_MEMORY_MB"] || "8192").to_i
     vb.cpus = 4
 

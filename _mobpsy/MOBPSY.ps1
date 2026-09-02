@@ -56,6 +56,171 @@ function Get-VagrantId {
  return $null
 }
 
+function Get-SourceRegistrationPath {
+ return (Join-Path $ProjectDir ".mobpsy_host\vm-registration.json")
+}
+
+function Get-VBoxInfoRaw([string]$Target) {
+ Test-VirtualBox
+ $old = $ErrorActionPreference
+ $ErrorActionPreference = "Continue"
+ try {
+  $raw = (& $script:VBoxManage showvminfo $Target --machinereadable 2>$null | Out-String)
+  if ($LASTEXITCODE -eq 0 -and $raw) { return $raw }
+ } finally {
+  $ErrorActionPreference = $old
+ }
+ return $null
+}
+
+function Get-VBoxInfoValue([string]$Raw, [string]$Key) {
+ if (-not $Raw) { return $null }
+ $pattern = '(?m)^' + [regex]::Escape($Key) + '="(.*)"$'
+ if ($Raw -match $pattern) {
+  return ($Matches[1] -replace '\\\\','\')
+ }
+ return $null
+}
+
+function Save-SourceVmRegistration {
+ $id = Get-VagrantId
+ if (-not $id) { return }
+
+ $raw = Get-VBoxInfoRaw $id
+ if (-not $raw) {
+  $raw = Get-VBoxInfoRaw $VmName
+ }
+ if (-not $raw) { return }
+
+ $uuid = Get-VBoxInfoValue $raw "UUID"
+ if (-not $uuid) { $uuid = $id }
+ $cfg = Get-VBoxInfoValue $raw "CfgFile"
+ if (-not $cfg) { return }
+
+ $dir = Join-Path $ProjectDir ".mobpsy_host"
+ New-Item -ItemType Directory -Path $dir -Force | Out-Null
+
+ $data = @{
+  vm_name = $VmName
+  uuid = $uuid
+  cfg_file = $cfg
+  saved_at = (Get-Date).ToString("s")
+ } | ConvertTo-Json
+
+ Set-Content -LiteralPath (Get-SourceRegistrationPath) -Value $data -Encoding UTF8
+}
+
+function Find-SourceVmConfig {
+ $saved = Get-SourceRegistrationPath
+ if (Test-Path -LiteralPath $saved) {
+  try {
+   $obj = Get-Content -LiteralPath $saved -Raw | ConvertFrom-Json
+   if ($obj.cfg_file -and (Test-Path -LiteralPath ([string]$obj.cfg_file))) {
+    return [string]$obj.cfg_file
+   }
+  } catch {}
+ }
+
+ $machineFolder = Get-VirtualBoxMachineFolder
+ $candidate = Join-Path (Join-Path $machineFolder $VmName) ($VmName + ".vbox")
+ if (Test-Path -LiteralPath $candidate) { return $candidate }
+
+ # VirtualBox guarda la ruta de las VMs registradas en VirtualBox.xml.
+ # Si la entrada quedó como <inaccessible>, el nombre puede desaparecer de
+ # `VBoxManage list vms`, pero la ruta original continúa aquí.
+ $globalXml = Join-Path $env:USERPROFILE ".VirtualBox\VirtualBox.xml"
+ $id = Get-VagrantId
+ if ($id -and (Test-Path -LiteralPath $globalXml)) {
+  try {
+   [xml]$xml = Get-Content -LiteralPath $globalXml -Raw
+   $entries = $xml.VirtualBox.Global.MachineRegistry.MachineEntry
+   foreach ($entry in $entries) {
+    $uuid = ([string]$entry.uuid).Trim('{}')
+    if ($uuid -ieq $id) {
+     $src = [string]$entry.src
+     if ($src) {
+      if ([System.IO.Path]::IsPathRooted($src)) {
+       $p = $src
+      } else {
+       $p = Join-Path (Split-Path -Parent $globalXml) $src
+      }
+      if (Test-Path -LiteralPath $p) { return $p }
+     }
+    }
+   }
+  } catch {}
+ }
+
+ # Último recurso: buscar únicamente el .vbox de MobPsy en la carpeta de VMs.
+ try {
+  $found = Get-ChildItem -LiteralPath $machineFolder -Filter ($VmName + ".vbox") -File -Recurse -ErrorAction SilentlyContinue |
+           Select-Object -First 1
+  if ($found) { return $found.FullName }
+ } catch {}
+
+ return $null
+}
+
+function Repair-SourceVmRegistration {
+ $id = Get-VagrantId
+ if (-not $id) { return $false }
+
+ # Caso normal: el UUID de Vagrant sigue registrado y accesible.
+ $raw = Get-VBoxInfoRaw $id
+ if ($raw) {
+  Save-SourceVmRegistration
+  return $true
+ }
+
+ # A veces VirtualBox conserva la VM por nombre pero el UUID local de Vagrant
+ # queda desincronizado. Se corrige únicamente el fichero id.
+ $byName = Get-VBoxInfoRaw $VmName
+ if ($byName) {
+  $uuid = Get-VBoxInfoValue $byName "UUID"
+  if ($uuid) {
+   $idFile = Join-Path $ProjectDir ".vagrant\machines\default\virtualbox\id"
+   Set-Content -LiteralPath $idFile -Value $uuid -NoNewline -Encoding ASCII
+   Save-SourceVmRegistration
+   Write-Host "[AUTO-REPARACIÓN] Se ha sincronizado Vagrant con la VM registrada." -ForegroundColor Yellow
+   return $true
+  }
+ }
+
+ $cfg = Find-SourceVmConfig
+ if (-not $cfg) {
+  return $false
+ }
+
+ Write-Host ""
+ Write-Host "[AUTO-REPARACIÓN] VirtualBox ha perdido la asociación de la VM creada por Vagrant." -ForegroundColor Yellow
+ Write-Host "Se volverá a registrar el archivo existente SIN borrar el disco:" -ForegroundColor DarkGray
+ Write-Host "  $cfg" -ForegroundColor DarkGray
+
+ # Nunca usar --delete aquí: la reparación solo elimina una entrada rota del
+ # registro de VirtualBox y vuelve a registrar el mismo .vbox existente.
+ try { & $script:VBoxManage unregistervm $id 2>$null | Out-Null } catch {}
+ Start-Sleep -Milliseconds 500
+
+ & $script:VBoxManage registervm $cfg | Out-Null
+ if ($LASTEXITCODE -ne 0) {
+  Write-Host "[AVISO] No se pudo volver a registrar automáticamente la VM." -ForegroundColor Yellow
+  return $false
+ }
+
+ $fixed = Get-VBoxInfoRaw $VmName
+ if (-not $fixed) { return $false }
+
+ $uuid = Get-VBoxInfoValue $fixed "UUID"
+ if ($uuid) {
+  $idFile = Join-Path $ProjectDir ".vagrant\machines\default\virtualbox\id"
+  Set-Content -LiteralPath $idFile -Value $uuid -NoNewline -Encoding ASCII
+ }
+
+ Save-SourceVmRegistration
+ Write-Host "[AUTO-REPARACIÓN] MobPsy-Workstation vuelve a estar accesible." -ForegroundColor Green
+ return $true
+}
+
 function Test-RegisteredVm {
  Test-VirtualBox
  $raw = (& $script:VBoxManage list vms 2>$null | Out-String)
@@ -66,8 +231,21 @@ function Get-MobPsyMode {
  $id = Get-VagrantId
  if ($id) {
   Test-VirtualBox
+
+  # Tras un reinicio de Windows, una entrada de VirtualBox puede quedar
+  # marcada como <inaccessible>. Si el .vbox sigue existiendo, MobPsy la
+  # re-registra de forma segura y conserva la misma workstation.
+  Repair-SourceVmRegistration | Out-Null
+
+  $id = Get-VagrantId
   $raw = (& $script:VBoxManage list vms 2>$null | Out-String)
-  if ($raw -match [regex]::Escape($id)) { return "SOURCE" }
+  if ($id -and ($raw -match [regex]::Escape($id))) { return "SOURCE" }
+
+  # Si existe estado Vagrant local, no clasificar accidentalmente esa máquina
+  # como OVA solo porque VirtualBox haya perdido temporalmente su registro.
+  if (Test-Path (Join-Path $ProjectDir ".vagrant\machines\default\virtualbox\id")) {
+   return "SOURCE"
+  }
  }
  if (Test-RegisteredVm) { return "OVA" }
  return "NONE"
@@ -215,11 +393,21 @@ function Prepare-CleanInstall {
 function Vagrant-UpNoProvision([bool]$Headless = $false) {
  if ($Headless) { $env:MOBPSY_HEADLESS = "1" }
  try {
- & vagrant up --no-provision --provider=virtualbox
- if ($LASTEXITCODE -ne 0) { Fail "No se pudo iniciar/crear la VM." }
+  # Si Windows/VirtualBox dejó la entrada de la VM inaccesible tras un
+  # reinicio, recuperar primero el registro antes de invocar Vagrant.
+  if (Get-VagrantId) {
+   Repair-SourceVmRegistration | Out-Null
+  }
+
+  & vagrant up --no-provision --provider=virtualbox
+  if ($LASTEXITCODE -ne 0) { Fail "No se pudo iniciar/crear la VM." }
+
+  # Guardar UUID y ruta exacta del .vbox para poder auto-reparar la
+  # asociación de VirtualBox en futuros reinicios del host.
+  Save-SourceVmRegistration
  }
  finally {
- Remove-Item Env:MOBPSY_HEADLESS -ErrorAction SilentlyContinue
+  Remove-Item Env:MOBPSY_HEADLESS -ErrorAction SilentlyContinue
  }
 }
 
